@@ -51,6 +51,8 @@ describe Oystercard do
 
     it 'checks that when a card is touched out it is no longer in_journey' do
       oystercard = Oystercard.new
+      oystercard.top_up(10)
+      oystercard.touch_in(entry_station)
       oystercard.touch_out(exit_station)
       expect(oystercard.in_journey?).to eq false
     end
@@ -59,13 +61,6 @@ describe Oystercard do
     oystercard = Oystercard.new(20)
     expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by(-1)
   end
-
-  #   it 'records the entry station upon touching out' do
-  #   subject.top_up(10)
-  #   subject.touch_in(entry_station)
-  #   subject.touch_out(exit_station)
-  #   expect(subject.entry_station).to eq :station
-  # end
 
     it 'records exit station upon touching out' do
     subject.top_up(10)
@@ -78,7 +73,7 @@ describe Oystercard do
     subject.top_up(10)
     subject.touch_in(entry_station)
     subject.touch_out(exit_station)
-    expect(subject.journeys).to include({:entry_station => exit_station})
+    expect(subject.journeys).to include({entry_station => exit_station})
   end
 
 end
