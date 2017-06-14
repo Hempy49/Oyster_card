@@ -23,29 +23,43 @@ describe Oystercard do
     it 'returns false when customer is not travelling' do
     oystercard = Oystercard.new(1)
     expect(oystercard.in_journey?).to eq false
+
     end
   end
 
   describe '#touch_in' do
-    it { is_expected.to respond_to(:touch_in) }
+    let (:entry_station) {double :station}
 
-    it 'returns true when customer touches in' do
+    it { is_expected.to respond_to(:touch_in).with(1).argument }
+
+    it 'checks if card stores an entry station' do
       oystercard = Oystercard.new(2)
-      expect(oystercard.touch_in).to eq true
+      oystercard.touch_in(entry_station)
+      expect(oystercard.entry_station).to eq entry_station
+
     end
   end
 
   describe '#touch_out' do
+    let (:entry_station) {double :station}
     it { is_expected.to respond_to(:touch_out) }
 
     it 'returns false when customer touches out' do
       oystercard = Oystercard.new
-      expect(oystercard.touch_out).to eq false
+      oystercard.touch_out
+      expect(oystercard.in_journey?).to eq false
     end
 
     it 'deducts correct amount when journey\'s complete' do
     oystercard = Oystercard.new(20)
     expect{oystercard.touch_out}.to change{oystercard.balance}.by(-1)
+  end
+
+    it 'resets the entry station upon touching out' do
+    subject.top_up(10)
+    subject.touch_in(entry_station)
+    subject.touch_out
+    expect(subject.entry_station).to eq nil
   end
 end
 
