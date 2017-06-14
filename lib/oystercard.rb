@@ -1,7 +1,7 @@
 # lib/oystercard.rb
 class Oystercard
   attr_accessor :balance, :money, :entry_station
-  attr_reader :entry_station
+  attr_reader :entry_station, :exit_station, :journey, :journeys
   DEFAULT_BALANCE = 0
   MAX_LIMIT = 90
   MIN_FARE = 1
@@ -9,6 +9,9 @@ class Oystercard
    def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
     @entry_station
+    @journeys = []
+    @exit_station
+    @journey
   end
 
   def top_up(money)
@@ -25,9 +28,12 @@ class Oystercard
     @entry_station = entry_station
   end
 
-  def touch_out
+  def touch_out(exit_station)
     deduct(MIN_FARE)
-    @entry_station = nil
+    # @entry_station = entry_station
+    @exit_station = exit_station
+    @journey = Hash[:entry_station, exit_station]
+    @journeys << @journey
   end
 
   def min_amount

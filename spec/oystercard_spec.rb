@@ -5,6 +5,10 @@ describe Oystercard do
 
   it { is_expected.to respond_to(:top_up).with(1).argument }
 
+  it 'is initialized with an empty list of journeys' do
+  expect(subject.journeys).to eq []
+  end
+
   describe '#top_up' do
     it 'adds money to the oystercard balance' do
       oystercard = Oystercard.new(10)
@@ -42,25 +46,41 @@ describe Oystercard do
 
   describe '#touch_out' do
     let (:entry_station) {double :station}
+    let (:exit_station) {double :station}
     it { is_expected.to respond_to(:touch_out) }
 
-    it 'returns false when customer touches out' do
+    it 'checks that when a card is touched out it is no longer in_journey' do
       oystercard = Oystercard.new
-      oystercard.touch_out
+      oystercard.touch_out(exit_station)
       expect(oystercard.in_journey?).to eq false
     end
 
     it 'deducts correct amount when journey\'s complete' do
     oystercard = Oystercard.new(20)
-    expect{oystercard.touch_out}.to change{oystercard.balance}.by(-1)
+    expect{oystercard.touch_out(exit_station)}.to change{oystercard.balance}.by(-1)
   end
 
-    it 'resets the entry station upon touching out' do
+  #   it 'records the entry station upon touching out' do
+  #   subject.top_up(10)
+  #   subject.touch_in(entry_station)
+  #   subject.touch_out(exit_station)
+  #   expect(subject.entry_station).to eq :station
+  # end
+
+    it 'records exit station upon touching out' do
     subject.top_up(10)
     subject.touch_in(entry_station)
-    subject.touch_out
-    expect(subject.entry_station).to eq nil
+    subject.touch_out(exit_station)
+    expect(subject.exit_station).to eq exit_station
   end
+
+    it 'stores a journey upon touching out' do
+    subject.top_up(10)
+    subject.touch_in(entry_station)
+    subject.touch_out(exit_station)
+    expect(subject.journeys).to include({:entry_station => exit_station})
+  end
+
 end
 
   describe '#min_amount' do
