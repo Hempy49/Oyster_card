@@ -1,10 +1,9 @@
 class Station
+  attr_reader :zone, :name
 
-attr_reader :name, :zone 
-
-def initialize
-@name
-@zone
-end
+  def initialize(args)
+    @zone = args.fetch(:zone)
+    @name = args.fetch(:name)
+  end
 
 end
