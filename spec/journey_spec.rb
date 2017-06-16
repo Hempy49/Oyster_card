@@ -1,26 +1,21 @@
-require 'Journey'
+require 'journey'
 
 describe Journey do
 
-  let(:station) { double(:Waterloo) }
+  let(:station)      { double(:Waterloo) }
   let(:exit_station) { double(:Aldgate) }
-  let(:journey) { described_class.new(station) }
+  let(:journey)      { described_class.new }
 
-  describe "#entry_station" do
-    it "should return the entry station" do
-      expect(journey.entry_station).to eq(station)
+  describe "#start" do
+    it "should record the entry station" do
+      expect(journey.start(station)).to eq station
     end
   end
 
-  describe "#record_journey" do
-    it "should create a journey record upon touch_out" do
-      expect(journey.record_journey(station, exit_station)).to eq({ entry: station, exit: exit_station} )
-    end
-  end
 
- describe "#record_end" do
+  describe "#finish" do
    it "should record the exit station" do
-     expect(journey.record_end(exit_station)).to eq exit_station
+     expect(journey.finish(exit_station)).to eq exit_station
    end
- end
+  end
 end

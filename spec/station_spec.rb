@@ -1,4 +1,4 @@
-require 'Station'
+require 'station'
 
 describe Station do
 
@@ -15,6 +15,4 @@ describe Station do
       expect(station.name).to eq("aldgate")
     end
   end
-
-
 end
