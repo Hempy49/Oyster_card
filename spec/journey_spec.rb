@@ -18,5 +18,9 @@ describe Journey do
     end
   end
 
-
+ describe "#record_end" do
+   it "should record the exit station" do
+     expect(journey.record_end(exit_station)).to eq exit_station
+   end
+ end
 end
