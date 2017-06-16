@@ -21,10 +21,6 @@ class Oystercard
     previous_journeys.last
   end
 
-  def in_journey?
-    journey.exit_station == nil
-  end
-
   def touch_in(station, new_journey = Journey.new)
     raise "Please top up" if not_enough_money?
     deduct(journey.fare) if barrier_jumper?
