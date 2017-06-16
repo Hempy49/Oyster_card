@@ -12,6 +12,8 @@ describe Oystercard do
     allow(journey).to receive(:start)
     allow(journey).to receive(:finish)
     allow(journey).to receive(:exit_station) { exit_station }
+    allow(journey).to receive(:incomplete?)  { true }
+    allow(journey).to receive(:fare)         { 1 }
     journey
   end
 
@@ -29,13 +31,13 @@ describe Oystercard do
 
   describe "#topup" do
     it "should add a specified amount to the balance" do
-      expect{ subject.topup 10 }.to change{ subject.balance }.by 10
+      expect { subject.topup 10 }.to change { subject.balance }.by 10
     end
 
     context "new balance would exceed the limit" do
       it "should raise an error" do
         subject.topup max_limit
-        expect{ subject.topup(1) }.to raise_error("You have reached your maximum balance limit")
+        expect { subject.topup(1) }.to raise_error("You have reached your maximum balance limit")
       end
     end
   end
@@ -46,11 +48,11 @@ describe Oystercard do
         subject.topup(min_fare)
         subject.touch_in(station, journey)
       end
-
     end
+
     context "Not enough money on card" do
       it "should raise an error" do
-        expect{ subject.touch_in(station) }.to raise_error("Please top up")
+        expect { subject.touch_in(station) }.to raise_error("Please top up")
       end
     end
   end
@@ -72,7 +74,7 @@ describe Oystercard do
       it "should deduct my balance by the fare amount" do
         subject.topup(min_fare)
         subject.touch_in(station, journey)
-        expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by -min_fare
+        expect { subject.touch_out(exit_station) }.to change { subject.balance }.by -min_fare
       end
     end
   end

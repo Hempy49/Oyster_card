@@ -5,5 +5,4 @@ class Station
     @zone = args.fetch(:zone)
     @name = args.fetch(:name)
   end
-
 end

@@ -25,20 +25,30 @@ class Oystercard
     journey.exit_station == nil
   end
 
-  def touch_in(station, journey = Journey.new)
+  def touch_in(station, new_journey = Journey.new)
     raise "Please top up" if not_enough_money?
-    journey.start(station)
-    previous_journeys.push(journey)
+    deduct(journey.fare) if barrier_jumper?
+    new_journey.start(station)
+    previous_journeys.push(new_journey)
   end
 
   def touch_out(station)
-    deduct(MIN_FARE)
+    previous_journeys.push(Journey.new) unless journey.incomplete?
     journey.finish(station)
+    deduct(journey.fare)
   end
 
   private
   def deduct(amount)
     @balance-= amount
+  end
+
+  def barrier_jumper?
+    case
+    when @previous_journeys.empty? then false
+    when journey.incomplete? then true
+    else false
+    end
   end
 
   def too_much?(money)

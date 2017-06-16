@@ -26,16 +26,18 @@ describe Journey do
     end
   end
 
-describe "#fare" do
-  it "returns 1 for a complete journey" do
-    journey.start(station)
-    journey.finish(station)
-    expect(journey.fare).to eq 1
+  describe "#fare" do
+    before do
+      journey.start(station)
+    end
+
+    it "returns 1 for a complete journey" do
+      journey.finish(station)
+      expect(journey.fare).to eq 1
     end
 
     it "returns 6 for an incomplete journey" do
-    journey.start(station)
-    expect(journey.fare).to eq 6
+      expect(journey.fare).to eq 6
     end
   end
 end

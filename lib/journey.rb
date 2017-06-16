@@ -3,8 +3,8 @@ require_relative 'station'
 class Journey
   attr_reader :entry_station, :exit_station
 
-MIN_FARE = 1
-PENALTY_FARE = 6
+  MIN_FARE = 1
+  PENALTY_FARE = 6
 
   def initialize
     @entry_station = nil
@@ -26,5 +26,4 @@ PENALTY_FARE = 6
   def fare
     incomplete? ? PENALTY_FARE : MIN_FARE
   end
-
 end
