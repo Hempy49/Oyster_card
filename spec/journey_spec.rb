@@ -17,4 +17,25 @@ describe Journey do
      expect(journey.finish(exit_station)).to eq exit_station
    end
   end
+
+  describe "#incomplete?" do
+    it "returns false if a journey has been completed" do
+      journey.start(station)
+      journey.finish(station)
+      expect(journey.incomplete?).to eq false
+    end
+  end
+
+describe "#fare" do
+  it "returns 1 for a complete journey" do
+    journey.start(station)
+    journey.finish(station)
+    expect(journey.fare).to eq 1
+    end
+
+    it "returns 6 for an incomplete journey" do
+    journey.start(station)
+    expect(journey.fare).to eq 6
+    end
+  end
 end
