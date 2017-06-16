@@ -2,7 +2,7 @@ require 'station'
 
 describe Station do
 
-  let(:station) {described_class.new(name: "aldgate", zone: 1)}
+  let(:station) { described_class.new(name: "aldgate", zone: 1) }
 
   describe "#zone" do
     it "returns the zone that the station belongs to" do
